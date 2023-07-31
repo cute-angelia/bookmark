@@ -1,0 +1,5 @@
+[common]
+env = "product"
+debug = false
+
+[db]

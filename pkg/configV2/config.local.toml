@@ -1,0 +1,5 @@
+[common]
+env = "local"
+debug = true
+
+[db]
