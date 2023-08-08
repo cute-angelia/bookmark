@@ -12,6 +12,7 @@ func IsLocal() bool {
 		strings.Contains(host, ".local") ||
 		strings.Contains(host, "vanilla") ||
 		strings.Contains(host, "deMini") ||
+		strings.Contains(host, "demini") ||
 		strings.Contains(host, "MacBook") ||
 		strings.Contains(host, "DESKTOP-") ||
 		strings.Contains(host, "MBP") {
