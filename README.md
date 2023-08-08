@@ -26,4 +26,4 @@ PROXYADDR = socks5://XXXX.XXXX.XXXX.XXXX:8023
 
 ### chrome extension
 
-✅https://github.com/cute-angelia/shiori-web-ext
+[✅chrome-bookmark](https://github.com/cute-angelia/chrome-bookmark)
