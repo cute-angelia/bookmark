@@ -52,7 +52,7 @@ func main() {
 	}
 
 	// init shiori
-	dataDir := os.Getenv("SHIORI_DIR")
+	dataDir := "data"
 	dbPath := filepath.Join(dataDir, "bookmark.db")
 
 	database.Dbx, _ = database.ConnectSqlite(dbPath)

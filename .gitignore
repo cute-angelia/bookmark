@@ -21,7 +21,8 @@ go.sum
 .DS_Store
 */.DS_Store
 
-cmd/bookmark/uploads
+cmd/bookmark/data/uploads
+cmd/bookmark/data/*.db
 
 *.log
 

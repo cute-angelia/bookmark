@@ -1,5 +1,5 @@
 package consts
 
 const (
-	UploadDir = "uploads"
+	UploadDir = "data/uploads"
 )

@@ -20,15 +20,15 @@ password:admin123
 
 ```bash
 docker pull ghcr.io/cute-angelia/bookmark:latest
+
+docker run -d --name bookmark -v youdatapath:/app/data --log-opt max-size=10m ghcr.io/cute-angelia/bookmark:latest
 ```
 
-Env
+### 其他配置
 
 ```shell
-
-# 代理
+# 代理 基本不需要配置
 PROXYADDR = socks5://XXXX.XXXX.XXXX.XXXX:8023
-
 ```
 
 ### chrome extension
