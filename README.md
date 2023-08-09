@@ -1,25 +1,26 @@
-# Shiori
+# Bookmark
 
-吐了，写的啥玩意
+书签管理系统服务
 
 ### dev
 
 ```shell
-go run main.go
+cd cmd/bookmark && go run main.go
 
-open http://127.0.0.1:8080
+open http://127.0.0.1:38112
 
 username:admin
-password:admin
+password:admin123
 
 ```
 
 ### docker
 
-proxy env
+Env
 
 ```shell
 
+# 代理
 PROXYADDR = socks5://XXXX.XXXX.XXXX.XXXX:8023
 
 ```
