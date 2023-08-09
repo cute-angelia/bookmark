@@ -10,7 +10,7 @@ RUN go mod tidy
 # RUN ls -l ./
 
 # Builds your app with optional configuration
-RUN cd cmd/bookmark && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bookmark -ldflags '-extldflags "-static"'
+RUN cd cmd/bookmark && CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o /app/bookmark -ldflags '-extldflags "-static"'
 # -- Stage 2 -- #
 # Create the final environment with the compiled binary.
 FROM alpine
