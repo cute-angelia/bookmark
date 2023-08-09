@@ -1,9 +1,11 @@
 # Specifies a parent image
 # FROM golang:1.20-alpine  as builder
-FROM ubuntu  as builder
+FROM golang:1.20  as builder
 
 # 安装 cgo
-RUN apt-get update && apt-get install -y build-essential
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+         gcc libc6-dev
 
 # Creates an app directory to hold your app’s source code
 WORKDIR /app
