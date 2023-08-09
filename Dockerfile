@@ -5,14 +5,14 @@ WORKDIR /app
 # Copies everything from your root directory into /app
 COPY . .
 # Installs Go dependencies
-RUN go mod download
+RUN go mod tidy
 
-RUN ls -l /app
+RUN ls -l /app/cmd
 
-RUN ls -l ./
+RUN ls -l /app/cmd/bookmark
 
 # Builds your app with optional configuration
-RUN cd cmd/bookmark && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bookmarkapi -ldflags '-extldflags "-static"'
+RUN cd cmd/bookmark && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bookmark -ldflags '-extldflags "-static"'
 # -- Stage 2 -- #
 # Create the final environment with the compiled binary.
 FROM alpine
@@ -20,12 +20,12 @@ FROM alpine
 # RUN apk --no-cache add ca-certificates
 WORKDIR /app
 # Copy the binary from the builder stage and set it as the default command.
-COPY --from=builder /app/bookmarkapi /app/bookmarkapi
+COPY --from=builder /app/bookmark /app/bookmark
 
-RUN ls -l /app/bookmarkapi
+RUN ls -l /app/bookmark
 
-RUN chmod +x /app/bookmarkapi
+RUN chmod +x /app/bookmark
 # Tells Docker which network port your container listens on
 EXPOSE 38112
 # Specifies the executable command that runs when the container starts
-CMD ["/app/bookmarkapi"]
+CMD ["/app/bookmark"]
