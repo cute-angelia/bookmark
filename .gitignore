@@ -21,6 +21,8 @@ go.sum
 .DS_Store
 */.DS_Store
 
+cmd/bookmark/uploads
+
 *.log
 
 api/webproxy/webproxy.log.*
