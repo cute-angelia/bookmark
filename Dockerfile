@@ -7,6 +7,10 @@ COPY . .
 # Installs Go dependencies
 RUN go mod download
 
+RUN ls -l /app
+
+RUN ls -l ./
+
 # Builds your app with optional configuration
 RUN cd cmd/bookmark && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bookmarkapi -ldflags '-extldflags "-static"'
 # -- Stage 2 -- #
