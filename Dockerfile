@@ -7,9 +7,7 @@ COPY . .
 # Installs Go dependencies
 RUN go mod tidy
 
-RUN ls -l /app/cmd
-
-RUN ls -l /app/cmd/bookmark
+# RUN ls -l ./
 
 # Builds your app with optional configuration
 RUN cd cmd/bookmark && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bookmark -ldflags '-extldflags "-static"'

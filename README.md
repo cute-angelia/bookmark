@@ -18,6 +18,10 @@ password:admin123
 
 ### docker
 
+```bash
+docker pull ghcr.io/cute-angelia/bookmark:latest
+```
+
 Env
 
 ```shell
