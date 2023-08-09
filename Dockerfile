@@ -1,17 +1,9 @@
 # Specifies a parent image
-FROM golang:1.20-alpine  as builder
+# FROM golang:1.20-alpine  as builder
+FROM ubuntu  as builder
 
 # 安装 cgo
-RUN apk update \
-    && apk add --no-cache build-essential
-
-RUN apk add --update alpine-sdk
-RUN apk add --no-cache bash
-RUN apk add --no-cache ca-certificates
-RUN update-ca-certificates
-
-RUN apt-get update \
-    && apt-get install -y build-essential \
+RUN apt-get update && apt-get install -y build-essential
 
 # Creates an app directory to hold your app’s source code
 WORKDIR /app
