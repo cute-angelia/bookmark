@@ -21,7 +21,7 @@ password:admin123
 ```bash
 docker pull ghcr.io/cute-angelia/bookmark:latest
 
-docker run -d --name bookmark -v youdatapath:/app/data --log-opt max-size=10m ghcr.io/cute-angelia/bookmark:latest
+docker run -d --name bookmark -v youdatapath:/app/data -p 38112:38112 --log-opt max-size=10m ghcr.io/cute-angelia/bookmark:latest
 ```
 
 ### 其他配置
