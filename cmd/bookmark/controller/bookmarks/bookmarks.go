@@ -8,6 +8,7 @@ import (
 	"bookmark/pkg/utils"
 	"bytes"
 	"context"
+	"crypto/md5"
 	"encoding/base64"
 	"fmt"
 	"github.com/cute-angelia/go-utils/syntax/itime"
@@ -249,8 +250,6 @@ func (that Bookmarks) deleteByUrl(w http.ResponseWriter, r *http.Request) {
 func (that Bookmarks) showShot(w http.ResponseWriter, r *http.Request) {
 	image_url := apiV2.QueryString(r, "image_url")
 
-	log.Println("x", image_url)
-
 	// 拼接头像文件路径
 	filePath := filepath.Join(consts.UploadDir, image_url)
 
@@ -275,6 +274,13 @@ func (that Bookmarks) showShot(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Disposition", "inline")
 	w.Header().Del("Content-Length")
+
+	// 生成缓存Key
+	cacheKey := fmt.Sprintf("%x", md5.Sum([]byte(image_url)))
+
+	// 设置缓存相关头
+	w.Header().Set("ETag", cacheKey)
+	w.Header().Set("Cache-Control", "public, max-age=864000")
 
 	// 将文件复制到response
 	io.Copy(w, file)
