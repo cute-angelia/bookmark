@@ -4,7 +4,8 @@
 
 ** 截屏功能必须有！**
 
-<img width="745" alt="image" src="https://github.com/cute-angelia/bookmark/assets/26561606/7edc6387-7c62-4094-a785-07dda4c14533">
+<img width="1487" alt="image" src="https://github.com/cute-angelia/bookmark/assets/26561606/f008051a-bc2e-4854-8aa9-ae1c256166ec">
+
 
 
 ### dev
