@@ -171,7 +171,6 @@ func (that Bookmarks) add(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// 要不要更新截图？ 删除旧图 todo
-
 		// 来源是插件，保留之前的tag
 		if u.From == "ext" {
 			oldTas := internal.NewTagInternal().GetTags(bookmark.Tags)

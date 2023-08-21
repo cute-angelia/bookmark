@@ -11,6 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
+	"log"
 	"strings"
 )
 
@@ -335,6 +336,7 @@ func (db *SQLiteDatabase) GetBookmarks(ctx context.Context, opts GetBookmarksOpt
 	// Expand query, because some of the args might be an array
 	query, args, err := sqlx.In(query, args...)
 	if err != nil {
+		log.Println(query)
 		return nil, errors.WithStack(err)
 	}
 
@@ -342,6 +344,7 @@ func (db *SQLiteDatabase) GetBookmarks(ctx context.Context, opts GetBookmarksOpt
 	bookmarks := []model2.BookmarkModel{}
 	err = db.SelectContext(ctx, &bookmarks, query, args...)
 	if err != nil && err != sql.ErrNoRows {
+		log.Println(query, args)
 		return nil, errors.WithStack(err)
 	}
 
@@ -366,11 +369,19 @@ func (db *SQLiteDatabase) GetBookmarks(ctx context.Context, opts GetBookmarksOpt
 		ORDER BY t.name`, bookmarkIds)
 	tagsQuery = db.Rebind(tagsQuery)
 	if err != nil {
+		log.Println(`SELECT bt.bookmark_id, t.id, t.name
+		FROM bookmark_tag bt
+		LEFT JOIN tag t ON bt.tag_id = t.id
+		WHERE bt.bookmark_id IN (?)
+		ORDER BY t.name`)
+		log.Println(bookmarkIds)
+		log.Println(err)
 		return nil, errors.WithStack(err)
 	}
 
 	err = db.Select(&tags, tagsQuery, tagArgs...)
 	if err != nil && err != sql.ErrNoRows {
+		log.Println(tagsQuery, tagArgs)
 		return nil, errors.WithStack(err)
 	}
 	for _, fetchedTag := range tags {

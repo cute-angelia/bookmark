@@ -13,6 +13,18 @@ func NewTagInternal() *tagsInternal {
 	return &tagsInternal{}
 }
 
+func (that tagsInternal) GetList() (tagModels []model2.TagModel) {
+	orm, _ := igorm.GetGormSQLite("cache")
+	tags := []model2.TagModel{}
+
+	orm.Raw(`SELECT bt.tag_id id, t.name 
+		FROM bookmark_tag bt
+		LEFT JOIN tag t ON bt.tag_id = t.id
+		GROUP BY t.id ORDER BY t.name`).Scan(&tags)
+
+	return tags
+}
+
 func (that tagsInternal) GetTags(tagIds string) (tagModels []model2.TagModel) {
 	orm, _ := igorm.GetGormSQLite("cache")
 	tags := []model2.TagModel{}
@@ -30,8 +42,9 @@ func (that tagsInternal) GetTags(tagIds string) (tagModels []model2.TagModel) {
 func (that tagsInternal) InsertTag(tags []string) (tagModels []model2.TagModel, tagIds []int) {
 	orm, _ := igorm.GetGormSQLite("cache")
 	for _, name := range tags {
+		name = strings.TrimSpace(name)
 		tagmodel := model2.TagModel{
-			Name: strings.TrimSpace(name),
+			Name: name,
 		}
 		orm.Where("name = ?", name).FirstOrCreate(&tagmodel)
 		tagModels = append(tagModels, tagmodel)
