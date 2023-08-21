@@ -323,7 +323,10 @@ export default {
         }
       } else {
         if (rxIncludeTag.test(search)) {
-          return;
+          this.search = search.replace(rxIncludeTag, "");
+          this.page = 1;
+          this.loadData();
+          return
         }
 
         if (rxExcludeTag.test(search)) {

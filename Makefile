@@ -15,8 +15,8 @@ run:
 tag:
 	git pull origin main
 	git add .
-	git commit -am "增加图片缓存"
+	git commit -am "编辑标签"
 	git push origin main
-	git tag v1.0.12
+	git tag v1.0.13
 	git push --tags
 	@echo "\n tags 发布中..."

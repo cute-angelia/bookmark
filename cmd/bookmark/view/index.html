@@ -20,6 +20,11 @@
   <link href="assets/css/custom-dialog.css" rel="stylesheet">
   <link href="assets/css/bookmark-item.css" rel="stylesheet">
 
+  <!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
   <script src="assets/js/vue.min.js"></script>
   <script src="assets/js/url.min.js"></script>
 </head>
@@ -48,6 +53,9 @@
 		import pageHome from "./assets/js/page/home.js";
 		import pageSetting from "./assets/js/page/setting.js";
 		import customDialog from "./assets/js/component/dialog.js";
+
+// import Element from 'element-ui';
+// Vue.use(Element);
 
 		var app = new Vue({
 			el: '#main-scene',

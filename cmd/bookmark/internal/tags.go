@@ -31,7 +31,7 @@ func (that tagsInternal) InsertTag(tags []string) (tagModels []model2.TagModel, 
 	orm, _ := igorm.GetGormSQLite("cache")
 	for _, name := range tags {
 		tagmodel := model2.TagModel{
-			Name: name,
+			Name: strings.TrimSpace(name),
 		}
 		orm.Where("name = ?", name).FirstOrCreate(&tagmodel)
 		tagModels = append(tagModels, tagmodel)
