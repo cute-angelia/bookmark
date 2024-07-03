@@ -57,6 +57,35 @@ func (that bookmarksInternal) GetBookmarkList(opts database.GetBookmarksOptions,
 	}
 
 	list, count, _ = db.Paginate[model2.BookmarkModel](ormSearch, page, perpage)
+
+	// 组装 tags_detail
+	for i, model := range list {
+		tagsarray := strings.Split(model.Tags, ",")
+		for _, tagIdstr := range tagsarray {
+			tagId, _ := strconv.Atoi(tagIdstr)
+			if tagId > 0 {
+				list[i].TagsDetail = append(list[i].TagsDetail, that.GetTagInfo(tagId))
+			}
+		}
+	}
+
+	return
+}
+
+// GetTagInfo 获取tag信息
+func (that bookmarksInternal) GetTagInfo(tagId int) (tag model2.TagModel) {
+	that.orm.Where("id = ?", tagId).First(&tag)
+	return
+}
+
+// GetTagIdByBookMarkId 书签获取 tagId
+func (that bookmarksInternal) GetTagIdByBookMarkId(id int) (ids []int) {
+	bookmarkTags := []model2.BookmarkTagModel{}
+	that.orm.Where("bookmark_id = ?", id).Find(&bookmarkTags)
+
+	for _, tag := range bookmarkTags {
+		ids = append(ids, tag.TagId)
+	}
 	return
 }
 
