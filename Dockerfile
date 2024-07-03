@@ -1,6 +1,6 @@
 # Specifies a parent image
 # FROM golang:1.20-alpine  as builder
-FROM golang:1.20  as builder
+FROM golang:1.22  as builder
 
 # 安装 cgo
 RUN apt-get update \

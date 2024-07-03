@@ -17,6 +17,6 @@ tag:
 	git add .
 	git commit -am "修复查询"
 	git push origin main
-	git tag v1.0.16
+	git tag v1.0.17
 	git push --tags
 	@echo "\n tags 发布中..."
