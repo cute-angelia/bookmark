@@ -11,20 +11,20 @@
 
 docker 启动 && 配置 chrome 扩展
 
-* docker
+1. docker 
 
-```bash
-docker pull ghcr.io/cute-angelia/bookmark:latest
+    ```bash
+    docker pull ghcr.io/cute-angelia/bookmark:latest
+    
+    docker run -d --name bookmark -v youdatapath:/app/data -p 38112:38112 --log-opt max-size=10m ghcr.io/cute-angelia/bookmark:latest
+    ```
 
-docker run -d --name bookmark -v youdatapath:/app/data -p 38112:38112 --log-opt max-size=10m ghcr.io/cute-angelia/bookmark:latest
-```
+2. chrome extension 地址
 
-* chrome extension 地址
-
-[✅chrome-bookmark](https://github.com/cute-angelia/chrome-bookmark)
+    [✅chrome-bookmark](https://github.com/cute-angelia/chrome-bookmark)
 
  
-### 开发说明
+### 本机开发说明
 
 ```shell
 cd cmd/bookmark && go run main.go
