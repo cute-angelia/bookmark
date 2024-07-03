@@ -7,7 +7,6 @@ import (
 	"bookmark/cmd/bookmark/internal/errorcode"
 	"bookmark/pkg/utils"
 	"bytes"
-	"context"
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
@@ -80,39 +79,27 @@ func (that Bookmarks) lists(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	offset := (int(page) - 1) * 30
-
 	// Prepare filter for database
 	searchOptions := database.GetBookmarksOptions{
 		Tags:         tags,
 		ExcludedTags: excludedTags,
 		Keyword:      u.Keyword,
 		Limit:        30,
-		Offset:       offset,
 		OrderMethod:  database.ByLastAdded,
 	}
-	ctx := context.Background()
-	// Calculate max page
-	if nBookmarks, err := database.Dbx.GetBookmarksCount(ctx, searchOptions); err != nil {
-		api.Error(w, r, nil, err.Error(), -1)
-		return
-	} else {
-		maxPage := int(math.Ceil(float64(nBookmarks) / 30))
-		// Fetch all matching bookmarks
-		if bookmarks, err := database.Dbx.GetBookmarks(ctx, searchOptions); err != nil {
-			api.Error(w, r, nil, err.Error(), -1)
-			return
-		} else {
-			// Return JSON response
-			resp := map[string]interface{}{
-				"page":      page,
-				"maxPage":   maxPage,
-				"bookmarks": bookmarks,
-			}
-			api.Success(w, r, resp, "获取书签列表")
-			return
-		}
+
+	bookmarkInternal := internal.NewBookmarksInternal()
+	bookmarks, count := bookmarkInternal.GetBookmarkList(searchOptions, int(page), 30)
+
+	maxPage := int(math.Ceil(float64(count) / 30))
+	// Return JSON response
+	resp := map[string]interface{}{
+		"page":      page,
+		"maxPage":   maxPage,
+		"bookmarks": bookmarks,
 	}
+	api.Success(w, r, resp, "获取书签列表")
+	return
 }
 
 func (that Bookmarks) add(w http.ResponseWriter, r *http.Request) {

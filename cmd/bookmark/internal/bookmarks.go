@@ -1,11 +1,15 @@
 package internal
 
 import (
+	"bookmark/cmd/bookmark/database"
 	"bookmark/cmd/bookmark/internal/consts"
 	model2 "bookmark/cmd/bookmark/model"
+	"bookmark/pkg/db"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/cute-angelia/go-utils/components/igorm"
 	"github.com/guonaihong/gout"
+	"gorm.io/gorm"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,16 +19,45 @@ import (
 )
 
 type bookmarksInternal struct {
+	orm *gorm.DB
 }
 
 func NewBookmarksInternal() *bookmarksInternal {
-	return &bookmarksInternal{}
-}
-func (that bookmarksInternal) Info(uri string) model2.BookmarkModel {
 	orm, _ := igorm.GetGormSQLite("cache")
+	return &bookmarksInternal{
+		orm: orm,
+	}
+}
+
+func (that bookmarksInternal) Info(uri string) model2.BookmarkModel {
 	bookmark := model2.BookmarkModel{}
-	orm.Where("url = ?", uri).First(&bookmark)
+	that.orm.Where("url = ?", uri).First(&bookmark)
 	return bookmark
+}
+
+// GetBookmarkList 查询书签列表
+func (that bookmarksInternal) GetBookmarkList(opts database.GetBookmarksOptions, page, perpage int) (list []model2.BookmarkModel, count int64) {
+	ormSearch := that.orm
+
+	// Add where clause for IDs
+	if len(opts.IDs) > 0 {
+		ormSearch = ormSearch.Or("id in (?)", opts.IDs)
+	}
+
+	if len(opts.Keyword) > 0 {
+		ormSearch = ormSearch.Where("title like ? ", "%"+opts.Keyword+"%")
+	}
+
+	if len(opts.Tags) > 0 {
+		tags := []model2.TagModel{}
+		that.orm.Where("name in (?)", opts.Tags).Find(&tags)
+		for _, tag := range tags {
+			ormSearch = ormSearch.Where("tags like ? ", fmt.Sprint("%"+fmt.Sprintf("%d", tag.ID)+"%"))
+		}
+	}
+
+	list, count, _ = db.Paginate[model2.BookmarkModel](ormSearch, page, perpage)
+	return
 }
 
 func (that bookmarksInternal) InfoById(id int) model2.BookmarkModel {

@@ -15,8 +15,8 @@ run:
 tag:
 	git pull origin main
 	git add .
-	git commit -am "update"
+	git commit -am "修复查询"
 	git push origin main
-	git tag v1.0.15
+	git tag v1.0.16
 	git push --tags
 	@echo "\n tags 发布中..."
