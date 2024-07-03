@@ -39,6 +39,8 @@ func (that bookmarksInternal) Info(uri string) model2.BookmarkModel {
 func (that bookmarksInternal) GetBookmarkList(opts database.GetBookmarksOptions, page, perpage int) (list []model2.BookmarkModel, count int64) {
 	ormSearch := that.orm
 
+	ormSearch = ormSearch.Order("id desc")
+
 	// Add where clause for IDs
 	if len(opts.IDs) > 0 {
 		ormSearch = ormSearch.Or("id in (?)", opts.IDs)
