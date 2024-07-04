@@ -15,6 +15,10 @@ on:
   #  branches:
   #    - master
 
+env:
+  REPOSITORY: "${{ github.repository }}"
+  MM_NOTIFY_URL: "${{ secrets.MM_NOTIFY_URL }}"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,5 +30,15 @@ jobs:
         with:
           image_name: ${{ github.repository }} # it will be lowercased internally
           github_token: ${{ secrets.RELEASE_TOKEN }}
+      
+      - name: notify
+        run: |
+          if [ $MM_NOTIFY_URL ];then
+            curl  -H 'Content-Type: application/json' \
+              -d "{\"msgtype\": \"text\",\"text\": {\"content\":\"镜像发布成功 $REPOSITORY \"}}" \
+              $MM_NOTIFY_URL
+          else
+            echo 'MM_NOTIFY_URL not set'
+          fi
     #- name: Build the Docker image
     #  run: docker build . --file Dockerfile --tag screenshot:$(date +%s)
